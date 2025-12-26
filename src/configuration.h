@@ -1,7 +1,5 @@
 #define PRODUCT                             "ESP!NOW Remote"
-#define VERSION                             0x001005
-#define PRODUCT_ID                          "ESPNOWREMOTE"
-#define PRODUCT_KEY                         0xA0
+#define VERSION                             0x001006
 #define OWNER                               "gea"
 
 #define ESPNOW_TELEGRAM_WIZMOTE
@@ -11,6 +9,7 @@
 #define ESPNOW_SEND_DATA_COMPLETE
 
     #ifdef WIZMOTE_PCA6416A
+        #define PRODUCT_ID                  "WIZMOTE"
         #define DESCRIPTION                 "Wiz Smart Remote - PCA6416A"
         #define SDA_PIN                     14
         #define SCL_PIN                     2
@@ -23,13 +22,12 @@
     #endif
 
     #ifdef WIZMOTE_HC165
-        #undef PRODUCT_ID
         #define PRODUCT_ID                  "WIZMOTE"
         #define DESCRIPTION                 "Wiz Smart Remote - HC165"
         #define SDA_PIN                     5
         #define SCL_PIN                     4
         #define LOAD_PIN                    13
-        #define IO_BUTTON_SLEEP_PIN         14   
+        #define IO_BUTTON_MOON_PIN         14   
         #define IO_BUTTON_POLARITY          LOW
         #ifdef WIZMOTE_ACTIVE_LED_MOD
             #define ACTIVE_PIN              2
@@ -54,9 +52,8 @@
     #endif
 
     #if (defined WEMOS_MOTE_ON_UP_DOWN_OFF || defined WEMOS_MOTE_ON_OFF_1_2 || defined WEMOS_MOTE_1_2_3_4)
-        #undef PRODUCT_ID
         #define PRODUCT_ID                  "WEMOSMOTE"
-        #define DESCRIPTION_TYPE                "Wemos Remote " 
+        #define DESCRIPTION_TYPE            "Wemos Remote " 
         #define BUTTON_IO
         #define IO_BUTTON_POLARITY          LOW
         #define IO_BUTTON_MODE              INPUT_PULLUP    
@@ -106,7 +103,6 @@
 
 
     #if (defined WIFI_4BUTTON_REMOTE_ON_UP_DOWN_OFF || defined WIFI_4BUTTON_REMOTE_ON_1_2_OFF || defined WIFI_4BUTTON_REMOTE_1_2_3_4 || defined WIFI_4BUTTON_REMOTE_1_2_3_OFF)
-        #undef PRODUCT_ID
         #define PRODUCT_ID                      "4BWIFIREMOTE"
         #define DESCRIPTION_TYPE                "4 Button Wifi Remote " 
         #define BUTTON_IO
@@ -172,17 +168,7 @@
         #endif
     #endif
 
-    #ifdef BUTTON_RESET
-        #define DESCRIPTION                 "Wifi Button Reset (On)"
-        #define ACTIVE_PIN                  2
-        #define ACTIVE_PIN_POLARITY         HIGH
-        #define BATTERY_VOLTAGE_ADC_PIN     A0
-        #define POWER_OFF_DEEPSLEEP
-        #define BUTTON_CODES_ON             {BUTTON_RESET,  0,  0,  0,  0,  0,  0  , 0}
-    #endif
-
     #ifdef TUYA_2BUTTON_SCENE_SWITCH
-        #undef PRODUCT_ID
         #define PRODUCT_ID                  "2BUTTONSCENE"
         #define DESCRIPTION_TYPE            "Tuya 2 Button Scene switch "
         #define DESCRIPTION                 DESCRIPTION_TYPE "(ON-OFF)"
@@ -212,6 +198,41 @@
         #define SERIAL_DEBUG_PORT           0 
         #define BAUD_RATE_DEBUG             115200
     #endif  
+
+    #ifdef BUTTON_RESET
+        #define PRODUCT_ID                      "BUTTONRESET"      
+        #define DESCRIPTION_TYPE                "Wifi Button Reset" 
+        #if BUTTON_RESET==1
+            #define DESCRIPTION_FUNC            "(on)"
+        #elif BUTTON_RESET==2
+            #define DESCRIPTION_FUNC            "(off)"        
+        #elif BUTTON_RESET==3
+            #define DESCRIPTION_FUNC            "(moon)"  
+        #elif BUTTON_RESET==16
+            #define DESCRIPTION_FUNC            "(1)"  
+        #elif BUTTON_RESET==17
+            #define DESCRIPTION_FUNC            "(2)"  
+        #elif BUTTON_RESET==18
+            #define DESCRIPTION_FUNC            "(3)"  
+        #elif BUTTON_RESET==19
+            #define DESCRIPTION_FUNC            "(4)"  
+        #else
+            #define DESCRIPTION_FUNC            "(custom)"  
+        #endif
+        #define DESCRIPTION                     DESCRIPTION_TYPE " " DESCRIPTION_FUNC
+        #define ACTIVE_PIN                      2
+        #define ACTIVE_PIN_POLARITY             HIGH
+        #define BATTERY_VOLTAGE_ADC_PIN         A0
+        #define POWER_OFF_DEEPSLEEP
+        #define BUTTON_CODES_ON                 {BUTTON_RESET,  0,  0,  0,  0,  0,  0  , 0}
+    #endif
+
+#ifndef PRODUCT_ID
+    #define PRODUCT_ID                          "ESPNOWREMOTE"
+#endif
+#ifndef PRODUCT_KEY
+    #define PRODUCT_KEY                         0xA0
+#endif
 
 // Enter Project configuration above this line
 #include <lib/configuration_defaults.h>

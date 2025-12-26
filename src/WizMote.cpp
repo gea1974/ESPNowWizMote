@@ -245,7 +245,7 @@ void WizMoteClass::ButtonHC165() {
     pinMode(LOAD_PIN, OUTPUT);
     pinMode(SCL_PIN, OUTPUT);
     pinMode(SDA_PIN, INPUT);
-    pinMode(IO_BUTTON_SLEEP_PIN, INPUT);
+    pinMode(IO_BUTTON_MOON_PIN, INPUT);
 
     // load data into shift register
     digitalWrite(LOAD_PIN, LOW);
@@ -264,8 +264,8 @@ void WizMoteClass::ButtonHC165() {
         digitalWrite(SCL_PIN, HIGH);
     }
     incomingButtonPressed =  value;
-    #ifdef IO_BUTTON_SLEEP_PIN
-    sleepButtonPressed = digitalRead(IO_BUTTON_SLEEP_PIN) == IO_BUTTON_POLARITY;
+    #ifdef IO_BUTTON_MOON_PIN
+    sleepButtonPressed = digitalRead(IO_BUTTON_MOON_PIN) == IO_BUTTON_POLARITY;
     #endif
 }
 #endif
@@ -308,9 +308,9 @@ void WizMoteClass::ButtonIO() {
         pinMode(IO_BUTTON_DOWN_PIN, IO_BUTTON_MODE);
         incomingButtonPressed += 128 * (digitalRead(IO_BUTTON_DOWN_PIN) == IO_BUTTON_POLARITY);
     #endif
-    #ifdef IO_BUTTON_SLEEP_PIN
-        pinMode(IO_BUTTON_SLEEP_PIN, IO_BUTTON_MODE);
-        sleepButtonPressed = digitalRead(IO_BUTTON_SLEEP_PIN) == IO_BUTTON_POLARITY;
+    #ifdef IO_BUTTON_MOON_PIN
+        pinMode(IO_BUTTON_MOON_PIN, IO_BUTTON_MODE);
+        sleepButtonPressed = digitalRead(IO_BUTTON_MOON_PIN) == IO_BUTTON_POLARITY;
     #endif
 }
 #endif
