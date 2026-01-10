@@ -195,12 +195,15 @@ String reason;
 void EspNowSensorClass::configmodeHandle(){
     #ifdef SETUP_PIN
     if (digitalRead(SETUP_PIN)==SETUP_PIN_POLARITY) {
-      while (digitalRead(SETUP_PIN)==SETUP_PIN_POLARITY) ;// wait for Button released.
-      if (!configmode){
+      unsigned long setupDelay = millis();
+      while (digitalRead(SETUP_PIN)==SETUP_PIN_POLARITY) { // wait for Button released.
+        if ((millis()-setupDelay)>SETUP_PIN_DELAY) digitalWrite(ACTIVE_PIN, millis() % 1000 > 250);         //blink led fast while we are in config mode
+      }
+      if (!configmode && ((millis()-setupDelay)>SETUP_PIN_DELAY)){
         printLogMsgTime("Info: Button: Config mode enter\n" );
         configmodeEnter();
       }
-      else {
+      else if (configmode) {
         printLogMsgTime("Info: Button: Config mode leave\n"); 
         configmodeLeave();  
       }
@@ -313,7 +316,7 @@ void EspNowSensorClass::powerOff() {
       }
     #endif
 
-    #if (defined POWER_OFF_VOLTAGE_REGULATOR && defined VOLTAGE_REGULATOR_PIN)
+    #ifdef POWER_OFF_VOLTAGE_REGULATOR
       printLogMsgTime("PowerOff: Voltage regulator shutdown\n" );
       delay(100);
       digitalWrite(VOLTAGE_REGULATOR_PIN, !VOLTAGE_REGULATOR_POLARITY);
@@ -818,12 +821,12 @@ void EspNowSensorClass::initSettings(){
   EEPROM.put(EEPROM_BROADCASTREPEAT , ESPNOW_REPEAT_SEND);
   EEPROM.put(EEPROM_DEFAULTCHANNEL , 1);
   EEPROM.put(EEPROM_DEEPSLEEP_TIME, DEEPSLEEP_TIME);
-  EEPROM.put(EEPROM_CONFIG0, SETTINGS_CONFIG0_INIT); 
-  EEPROM.put(EEPROM_CONFIG1, SETTINGS_CONFIG1_INIT); 
-  EEPROM.put(EEPROM_CONFIG2, SETTINGS_CONFIG1_INIT); 
-  EEPROM.put(EEPROM_CONFIG3, SETTINGS_CONFIG2_INIT); 
-  EEPROM.put(EEPROM_CONFIG4, SETTINGS_CONFIG3_INIT); 
-  EEPROM.put(EEPROM_CONFIG5, SETTINGS_CONFIG4_INIT); 
+  EEPROM.put(EEPROM_CONFIG0, (uint32_t)SETTINGS_CONFIG0_INIT); 
+  EEPROM.put(EEPROM_CONFIG1, (uint32_t)SETTINGS_CONFIG1_INIT); 
+  EEPROM.put(EEPROM_CONFIG2, (uint32_t)SETTINGS_CONFIG1_INIT); 
+  EEPROM.put(EEPROM_CONFIG3, (uint32_t)SETTINGS_CONFIG2_INIT); 
+  EEPROM.put(EEPROM_CONFIG4, (uint32_t)SETTINGS_CONFIG3_INIT); 
+  EEPROM.put(EEPROM_CONFIG5, (uint32_t)SETTINGS_CONFIG4_INIT); 
 
   EEPROM.put(EEPROM_INITIALIZED , EEPROM_INITIALIZED_VALUE);
 

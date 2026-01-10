@@ -188,8 +188,13 @@
         #define POWER_OFF_DEEPSLEEP
         #define DEEPSLEEP_WAKEUP_GPIO_PIN1  1
         #define DEEPSLEEP_WAKEUP_GPIO_PIN2  2
-        #define BUTTON_CODES_ON             {1,  16,  18,  0,  0,  0,  0,  9}
-        #define BUTTON_CODES_OFF            {2,  17,  19,  0,  0,  0,  0,  8}
+        #ifdef WIZ_SMART_BUTTON_CODES
+            #define BUTTON_CODES_ON             {100,  0,  0,  0,  0,  0,  0,  102}
+            #define BUTTON_CODES_OFF            {101,  0,  0,  0,  0,  0,  0,  103}
+        #else
+            #define BUTTON_CODES_ON             {1,  16,  18,  0,  0,  0,  0,  9}
+            #define BUTTON_CODES_OFF            {2,  17,  19,  0,  0,  0,  0,  8}
+        #endif
 
         #define BUTTON_TIMEOUT_EVENT        0
 

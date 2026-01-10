@@ -114,6 +114,10 @@
         #endif
 #endif
 
+#if (!defined POWER_OFF_EXTERNAL && !defined POWER_OFF_VOLTAGE_REGULATOR && !defined POWER_OFF_DEEPSLEEP)
+    #define POWER_OFF_DEEPSLEEP
+#endif
+
 #ifndef DPID_STATE
     #define DPID_STATE                  0
 #endif
@@ -200,10 +204,17 @@
 #if (defined SETUP_PIN && !defined SETUP_PIN_POLARITY)
     #define SETUP_PIN_POLARITY                  LOW 
 #endif
+#if (defined SETUP_PIN && !defined SETUP_PIN_DELAY)
+    #define SETUP_PIN_DELAY                     1000 
+#endif
 #if (defined SHUTDOWN_PIN && !defined SHUTDOWN_PIN_POLARITY)
     #define SHUTDOWN_PIN_POLARITY               LOW 
 #endif
 #if ((defined DEEPSLEEP_WAKEUP_GPIO_PIN1 || defined DEEPSLEEP_WAKEUP_GPIO_PIN2 || defined DEEPSLEEP_WAKEUP_GPIO_PIN3 || defined DEEPSLEEP_WAKEUP_GPIO_PIN4) && !defined DEEPSLEEP_WAKEUP_GPIO_PIN_POLARITY)
+    #define DEEPSLEEP_WAKEUP_GPIO_PIN_POLARITY      LOW
+#endif
+
+#ifndef DEEPSLEEP_WAKEUP_GPIO_PIN_POLARITY
     #define DEEPSLEEP_WAKEUP_GPIO_PIN_POLARITY      LOW
 #endif
 
